@@ -3,6 +3,8 @@ package com.example.bookSearch.Services;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,7 +23,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriBuilder;
+
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.json.Json;
@@ -108,10 +110,14 @@ public class BookService {
             }
             if(result.containsKey("covers")){
                 //case of multiple covers
-                List<String> coverList=new ArrayList<String>();
-                logger.log(Level.INFO,">>>>%s".formatted(result.get("covers").getValueType()));
-                            
-                //indiv.setPicLink(result.get);
+                JsonArray JA=result.getJsonArray("covers");
+                List<String> coverL = JA.stream()
+                                        .map(v->v.toString())
+                                        .collect(Collectors.toList());
+                
+                //logger.log(Level.INFO,">>>>%s".formatted(Constants.URL_Pic_Base.formatted(coverL.get(0))));
+                
+                indiv.setPicLink(Constants.URL_Pic_Base.formatted(coverL.get(0)));
             }
             
         }catch(Exception ex){

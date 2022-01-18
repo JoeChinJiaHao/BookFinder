@@ -12,7 +12,9 @@
         
         <!-- <p data-th-text="${test}"></p>  -->
         <div class="d-flex mt-3 mb-3 ">
-            <p class="col"></p>
+            <p class="col">
+                <img th:src="${book.picLink}" alt="">
+            </p>
             <div class="col d-flex ">
                 <div class="row mb-3 mt-3">
                     <p data-th-text="'Title: '+${book.title}"></p>
