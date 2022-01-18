@@ -1,11 +1,13 @@
 package com.example.bookSearch.model;
 
+import com.example.bookSearch.Constants;
+
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
 
 public class indivBookModel {
-    private String picLink;
+    private String picLink=Constants.URL_Pic_Base.formatted("-1");
     private String title;
     private String excerpt="No excerpt found!";
     private String description="No description found!";

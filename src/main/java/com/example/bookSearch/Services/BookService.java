@@ -106,7 +106,7 @@ public class BookService {
                 indiv.setExcerpt(processedExceprtList.get(0).getString("excerpt"));
             }
             if(result.containsKey("cover")){
-                indiv.setPicLink(result.getString("cover"));
+                indiv.setPicLink(Constants.URL_Pic_Base.formatted(result.getString("cover")));
             }
             if(result.containsKey("covers")){
                 //case of multiple covers
