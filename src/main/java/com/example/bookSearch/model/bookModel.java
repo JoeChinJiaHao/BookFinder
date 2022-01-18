@@ -24,7 +24,7 @@ public class bookModel {
     public String getTitle(){
         return this.title;
     }
-
+    
     public static bookModel createUsingJsonObject(JsonObject O){
         bookModel b = new bookModel();
         b.setTitle(O.getString("title"));
