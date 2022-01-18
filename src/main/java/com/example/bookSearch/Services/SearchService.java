@@ -3,10 +3,16 @@ package com.example.bookSearch.Services;
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.bookSearch.Constants;
+
+import org.springframework.web.util.UriComponentsBuilder;
+
 public class SearchService {
     public static void main(String[] args) {
-        String test = "/works/abcd";
-        List<String> ttt = Arrays.asList(test.split("/"));
-        System.out.println(ttt.get(ttt.size()-1));
+       
+        final String url = UriComponentsBuilder
+                .fromUriString(Constants.URL_Find_One_Book_Base.formatted("ABCD"))
+                .toUriString(); 
+                System.out.println(url);
     }
 }

@@ -2,6 +2,7 @@ package com.example.bookSearch.Services;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 import com.example.bookSearch.BookSearchApplication;
 import com.example.bookSearch.Constants;
 import com.example.bookSearch.model.bookModel;
+import com.example.bookSearch.model.indivBookModel;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -60,6 +63,65 @@ public class BookService {
         return Collections.emptyList();
     }
 
+    public indivBookModel serachOneBook(String works_id){
 
+        final String url = UriComponentsBuilder
+                .fromUriString(Constants.URL_Find_One_Book_Base.formatted(works_id))
+                .toUriString(); 
+        final RequestEntity<Void> req = RequestEntity.get(url).build();
+        final RestTemplate template = new RestTemplate();
+        final ResponseEntity<String> resp = template.exchange(req, String.class);
+        indivBookModel indiv = new indivBookModel();
+        if (resp.getStatusCode() != HttpStatus.OK)
+            throw new IllegalArgumentException(
+                "Error: status code %s".formatted(resp.getStatusCode().toString())
+            );
+        final String body = resp.getBody();
+        try (InputStream is = new ByteArrayInputStream(body.getBytes())){
+            final JsonReader reader = Json.createReader(is);
+            final JsonObject result = reader.readObject();
+            if(result.containsKey("description")){
+                //case of book:Lord of the rings value is object
+                try{
+                    indiv.setDescription(result.getString("description"));
+                }catch(Exception ex){}
+                try{
+                    indiv.setDescription(result.getJsonObject("description").getString("value"));
+                }catch(Exception ex){}
+                
+            }
+            indiv.setTitle(result.getString("title"));
+            if(result.containsKey("excerpt")){
+                //cause of 1 excerpt
+                indiv.setExcerpt(result.getString("excerpt"));
+            }
+            if(result.containsKey("excerpts")){
+                //case of multiple excerpts, only use the first excerpt
+                JsonArray excerptArray = result.getJsonArray("excerpts");
+                List<JsonObject> processedExceprtList = excerptArray.stream()
+                                                        .map(v->(JsonObject)v)
+                                                        .collect(Collectors.toList());
+                indiv.setExcerpt(processedExceprtList.get(0).getString("excerpt"));
+            }
+            if(result.containsKey("cover")){
+                indiv.setPicLink(result.getString("cover"));
+            }
+            if(result.containsKey("covers")){
+                //case of multiple covers
+                List<String> coverList=new ArrayList<String>();
+                logger.log(Level.INFO,">>>>%s".formatted(result.get("covers").getValueType()));
+                            
+                //indiv.setPicLink(result.get);
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+
+
+        return indiv;
+
+    }
 
 }

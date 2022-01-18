@@ -19,7 +19,7 @@
         <div th:each="book:${results}">
             <p><a th:href="@{/book/{id}(id=${book.worksId})}" data-th-text="${book.title}"></a></p>
         </div>
-    
+        
         <div class="mt-6 mb-3">
             <p><a href="/">Back</a></p>
         </div>

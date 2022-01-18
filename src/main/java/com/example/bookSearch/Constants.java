@@ -7,5 +7,6 @@ public class Constants {
     public final static String SVC_Book = "Book service" ; 
     public static final String ENV_REDIS_PASSWORD="Redis_Pass_Weather";
     public final static String URL_Base = "http://openlibrary.org/search.json" ;
-
+    public final static String URL_Pic_Base="https://covers.openlibrary.org/b/id/";
+    public final static String URL_Find_One_Book_Base="https://openlibrary.org/works/%s.json";
 }
