@@ -2,6 +2,7 @@ package com.example.bookSearch;
 
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ public class AppConfig {
     }
 
     @Bean
+    @Qualifier(Constants.Bean_Book_Cache)
     public RedisTemplate<String, String> redisTemplateFactory(){
         final RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
         redisConfig.setHostName(redisHost);
@@ -46,7 +48,6 @@ public class AppConfig {
         template.setConnectionFactory(jedisFac);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new StringRedisSerializer());
-
         return template;
     }
 

@@ -2,6 +2,10 @@ package com.example.bookSearch.model;
 
 import java.util.List;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+
 public class indivBookModel {
     private String picLink;
     private String title;
@@ -33,6 +37,20 @@ public class indivBookModel {
     public String getExcerpt(){
         return this.excerpt;
     }
-   
+    public JsonObject toJson(){
+        return Json.createObjectBuilder()
+                    .add("title",this.title)
+                    .add("excerpt",this.excerpt)
+                    .add("description", this.description)
+                    .build();
+    }
+    public static indivBookModel createUsingJsonObject(JsonObject O){
+        indivBookModel ibook = new indivBookModel();
+        ibook.setDescription(O.getString("description"));
+        ibook.setExcerpt(O.getString("excerpt"));
+        ibook.setTitle(O.getString("title"));
+        return ibook;
+
+    }
 
 }
